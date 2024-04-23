@@ -13,10 +13,10 @@ function ProjectCard({ title, desc, img , githubLink , livelink}) {
           className="overlay flex items-center justify-center rounded-t-2xl absolute  top-0 left-0 w-full h-full bg-zinc-700 bg-opacity-0
         hidden group-hover:flex group-hover:bg-opacity-60 transition-all duration-1000 "
         >
-          {githubLink != null ?<Link href={githubLink} className="rounded-full mx-2 border-2 border-stone-600 h-14 w-14 relative hover:border-white group/link">
+          {githubLink != null ?<Link target="_blank" href={githubLink} className="rounded-full mx-2 border-2 border-stone-600 h-14 w-14 relative hover:border-white group/link">
             <CodeBracketIcon className=" h-10 w-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-600 group-hover/link:text-white"/>
             </Link>: null } 
-            {livelink != null ?<Link  href={livelink} className="rounded-full border-2 mx-2 border-stone-600 h-14 w-14 relative hover:border-white group/link">
+            {livelink != null ?<Link target="_blank" href={livelink} className="rounded-full border-2 mx-2 border-stone-600 h-14 w-14 relative hover:border-white group/link">
             <EyeIcon className=" h-10 w-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-stone-600 group-hover/link:text-white"/>
             </Link>:null  }
         </div>
