@@ -1,0 +1,27 @@
+[
+    {
+      "title": "Krishi Gyan",
+      "description": "Developed cost-effective real-time sensor access app for agriculture. Increased user engagement by 20% using Flutter, Django, and Firebase. Implemented ML model for better agricultural practice suggestions.",
+      "image": "https://res.cloudinary.com/diyfddcqe/image/upload/v1713866897/personal/121216834_m9fati.png",
+      "category": "Web Development",
+      "githubLink": "https://github.com/Krishi-Gyan"
+     
+    },
+    {
+      "title": "Data Hub Analytics",
+      "description": "Enhanced actionable insights by 40%. Built frontend with Flutter and robust backend for data processing. Efficiently managed team for bug-free deployment.",
+      "image": "https://res.cloudinary.com/diyfddcqe/image/upload/v1713866897/personal/143318897_t9crld.png",
+      "category": "Data Analytics",
+      "githubLink": "https://github.com/Data-hub-Analytics"
+     
+    },
+    {
+      "title": "Tiger Dev",
+      "description": "Created marketplace for 100+ unique NFTs, supporting conservation. Enabled purchase of digital collectibles to aid Malayan tiger preservation. Implemented blockchain for transaction security.",
+      "image": "https://res.cloudinary.com/diyfddcqe/image/upload/v1713866897/personal/2_vepn21.png",
+      "category": "Web Development",
+      "githubLink": "https://github.com/dsc-gtbit/Solana-react",
+      "liveLink": "https://hackerhouse-gdsc-gtbit.netlify.app/"
+    }
+  ]
+  
