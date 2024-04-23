@@ -41,7 +41,7 @@ function HeroSection() {
                 </div >
                 <div className='col-span-5 mt-5  lg:mt-0 flex justify-center items-center  sm:place-content-center sm:justify-center'>
                     <div className='bg-slate-300 w-[250px] h-[250px] rounded-full relative flex justify-center items-center'>
-                        <Image src="/images/img.png" alt="profile image" width={200} height={200} className='rounded-full ' />
+                        <Image src="/images/profile.jpg" alt="profile image" width={200} height={200} className='rounded-full ' />
                     </div>
                 </div>
             </div>
