@@ -35,7 +35,7 @@ function HeroSection() {
                     <div className=''>
                         <button className='px-4 py-3 mr-5 w-full sm:w-fit rounded-full bg-gradient-to-r from-blue-900 via-blue-600 to-blue-300 text-white '>Hire me</button>
                         <button className='px-1 py-1 mt-4 w-full sm:w-fit rounded-full bg-gradient-to-r from-blue-900 via-blue-600 to-blue-300  '>
-                            <span className='block rounded-full px-3 py-2 bg-black '> Download CV</span>
+                            <span className='block rounded-full px-3 py-2 bg-black text-white '> Download CV</span>
                         </button>
                     </div>
                 </div >

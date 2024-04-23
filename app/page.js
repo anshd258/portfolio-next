@@ -5,7 +5,7 @@ import AboutSection from "./components/aboutSection";
 
 export default function Home() {
   return (
-    <main className="flex  px-5 py-4">
+    <main className="flex  px-5 py-4  bg-black">
       <Navbar/>
    <div className=" container mt-16 mx-auto">
    <HeroSection/>
