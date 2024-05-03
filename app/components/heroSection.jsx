@@ -30,7 +30,7 @@ function HeroSection() {
                         />
                     </h1>
                     <p className='text-slate-400 text-base sm:text-lg  mb-6 lg:text-xl'>
-                    Experienced Full Stack Developer blending front-end finesse with back-end brilliance. Seeking new challenges to innovate and excel.
+                        Experienced Full Stack Developer blending front-end finesse with back-end brilliance. Seeking new challenges to innovate and excel.
                     </p>
                     <div className=''>
                         <button className='px-4 py-3 mr-5 w-full sm:w-fit rounded-full bg-gradient-to-r from-blue-900 via-blue-600 to-blue-300 text-white '>Hire me</button>
