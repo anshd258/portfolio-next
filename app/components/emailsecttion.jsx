@@ -37,7 +37,7 @@ function EmailSection() {
         <section className='grid  md:grid-cols-2 my-12  md:gap-4 relative'>
             <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 to-transparent rounded-full h-80 w-80 z-0 blur-xl absolute top-2/4 -left-5 transform -translate-x-1/2 -translate-1/2"></div>
             <div className='z-10'>
-                <h5 className='font-bold text-white text-xl mb-2 justify-self-start'> Let's Connect</h5>
+                <h5 className='font-bold text-white text-xl mb-2 justify-self-start'> Let`s Connect</h5>
                 <p className='text-slate-300 text-base mb-4 max-w-md'></p>
                 <div className='flex-row flex gap-2'>
                     <Link target="_blank" href={"https://www.linkedin.com/in/ansh-deep/"}>
