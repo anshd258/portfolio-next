@@ -23,7 +23,7 @@ function Navbar() {
   return (
     <nav className='fixed top-0 left-0 right-0 z-10  backdrop-blur-md bg-black bg-opacity-80 py-3'>
       <div className='flex mx-auto px-5  items-center  flex-wrap  justify-between'>
-        <Link href={"/"} className='text-white font-semibold  md:text-5xl text-2xl'> Navbar</Link>
+        <Link href={"/"} className='text-white font-semibold  md:text-5xl text-2xl'> Anshd258</Link>
         <div className='mobile-menu  md:hidden block '>
           {
             navbar ?
@@ -46,7 +46,7 @@ function Navbar() {
           </ul>
         </div>
       </div>
-      {navbar ? <MenuBlock links={navLinks}/>:null}
+      {navbar ? <MenuBlock links={navLinks} /> : null}
     </nav>
   )
 }

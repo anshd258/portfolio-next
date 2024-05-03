@@ -38,7 +38,7 @@ function EmailSection() {
             <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 to-transparent rounded-full h-80 w-80 z-0 blur-xl absolute top-2/4 -left-5 transform -translate-x-1/2 -translate-1/2"></div>
             <div className='z-10'>
                 <h5 className='font-bold text-white text-xl mb-2 justify-self-start'> Let`s Connect</h5>
-                <p className='text-slate-300 text-base mb-4 max-w-md'></p>
+                <p className='text-slate-300 text-base mb-4 max-w-md'>Hello and welcome! I'm thrilled to connect with fellow developers, tech enthusiasts, and potential collaborators. Whether you're here to explore my portfolio, discuss exciting projects, or simply share your insights, I'm eager to hear from you.</p>
                 <div className='flex-row flex gap-2'>
                     <Link target="_blank" href={"https://www.linkedin.com/in/ansh-deep/"}>
                         <Image width="50" height="50" ta src={"https://img.icons8.com/3d-fluency/94/linkedin.png"} alt="linkedin" />
