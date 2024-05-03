@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main className="flex px-8  py-4  bg-black">
       <Navbar />
-      <Analytics />
+      <Analytics />  {/* for analytics only */}
       <div className=" container mt-16 mx-auto">
         <HeroSection />
 
