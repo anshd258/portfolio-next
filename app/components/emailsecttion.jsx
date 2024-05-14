@@ -34,8 +34,8 @@ function EmailSection() {
     }
 
     return (
-        <section className='grid  md:grid-cols-2 my-12  md:gap-4 relative'>
-            <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 to-transparent rounded-full h-80 w-80 z-0 blur-xl absolute top-2/4 -left-5 transform -translate-x-1/2 -translate-1/2"></div>
+        <section id='contact' className='grid  md:grid-cols-2 my-12  md:gap-4 relative'>
+            <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-500 to-transparent rounded-full h-80 w-80 z-0 blur-3xl absolute top-2/4 -left-5 transform -translate-x-1/2 -translate-1/2"></div>
             <div className='z-10'>
                 <h5 className='font-bold text-white text-xl mb-2 justify-self-start'> Let`s Connect</h5>
                 <p className='text-slate-300 text-base mb-4 max-w-md'>Hello and welcome! I`m thrilled to connect with fellow developers, tech enthusiasts, and potential collaborators. Whether you`re here to explore my portfolio, discuss exciting projects, or simply share your insights, I`m eager to hear from you.</p>
@@ -55,7 +55,7 @@ function EmailSection() {
                     </label>
                     <input name='email' type='email'
                         id='email'
-                        className='bg-[#18191E] border border-[#33353F] hover:border-blue-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
+                        className='bg-[#18191E] border border-[#33353F] hover:border-secondary-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
                         required
                         placeholder='temp@temp.com' />
                 </div>
@@ -67,7 +67,7 @@ function EmailSection() {
                     </label>
                     <input name='subject' type='text'
                         id='subject'
-                        className='bg-[#18191E] border border-[#33353F] hover:border-blue-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
+                        className='bg-[#18191E] border border-[#33353F] hover:border-secondary-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
                         required
                         placeholder='Just saying hi' />
                 </div>
@@ -79,11 +79,11 @@ function EmailSection() {
                     </label>
                     <textarea name='message' type='text'
                         id='message'
-                        className='bg-[#18191E] border border-[#33353F] hover:border-blue-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
+                        className='bg-[#18191E] border border-[#33353F] hover:border-secondary-400 placeholder-slate-400 text-gray-100 text-sm rounded-lg block w-full p-2.5'
                         required
                         placeholder='Let`s talk about....' />
                 </div>
-                <button type='submit' className='px-4 py-2 mr-5 w-full  rounded-lg bg-gradient-to-r from-blue-900 via-blue-600 to-blue-400 text-white '>Send email</button>
+                <button type='submit' className='px-4 py-2 mr-5 w-full  rounded-lg bg-gradient-to-r from-primary-900 to-secondary-400 text-white '>Send email</button>
                 {
 
 

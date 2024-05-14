@@ -2,7 +2,7 @@ import React from "react";
 
 function SectionsTab({ active, selected, title}) {
   const buttonClass = active
-    ? "text-white border-b border-blue-400"
+    ? "text-white border-b border-primary-400"
     : "text-neutral-500";
   return (
   

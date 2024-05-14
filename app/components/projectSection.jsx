@@ -29,8 +29,8 @@ function ProjectSection() {
     setTag(tag);
   };
   return (
-    <>
-      <h1 className="text-center font-bold text-white md:text-7xl text-5xl mb-12">
+    < >
+      <h1 id="projects" className="text-center font-bold text-white md:text-7xl text-5xl mb-12">
         Projects
       </h1>
       <div className="flex flex-row justify-center items-center text-white s">

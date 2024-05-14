@@ -101,16 +101,16 @@ function AboutSection() {
     });
   };
   return (
-    <section className="text-white">
+    <section className="text-white" id="about">
       <div className="md:grid md:grid-cols-2 gap-8 items-center px-4 py-8 xl:gap-16 sm:py-16 xl:px-16 ">
         <div className="flex justify-center item-center">
-        <Image
-          alt="developer image"
-          src={"/images/developer.png"}
-          width={500}
-          height={500}
-          className="rounded-3xl col-span-1    "
-        />
+          <Image
+            alt="developer image"
+            src={"/images/developer.png"}
+            width={500}
+            height={500}
+            className="rounded-3xl col-span-1    "
+          />
         </div>
         <div className="h-full w-full flex flex-col item-center justify-center">
           <h2 className="text-white  md:text-5xl text-4xl font-semibold text-center py-5 justify-self-center place-self-center ">
