@@ -3,31 +3,257 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  color-scheme: dark;
+
+  /* Easings — softer settle for smoother motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);              /* softer than ease-out-quart */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);          /* gentler tail than 0.19/0.22/1 */
+  --ease-out-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);   /* very gentle, for big surfaces */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);           /* smooth in-out */
+
+  /* Type — geist npm package exposes --font-geist-sans and --font-geist-mono */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Surface */
+  --bg: oklch(0.16 0.012 60);
+  --bg-elev: oklch(0.20 0.012 60);
+  --hairline: oklch(0.30 0.009 60);
+  --hairline-strong: oklch(0.40 0.008 60);
+  --text: oklch(0.84 0.004 60);
+  --text-dim: oklch(0.62 0.005 60);
+  --text-faint: oklch(0.50 0.006 60);
+  --text-bright: oklch(0.985 0.003 60);
+  --ember: oklch(0.78 0.14 65);
+  --ember-glow: oklch(0.84 0.13 70);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+html {
+  /* Native smooth-scroll is a fallback when Lenis isn't running (reduced-motion). */
+  scroll-padding-top: 96px;
+}
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+/* Lenis basics — required so Lenis can take control of the scroll. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* Subtle, slow rise on initial page load — a single coordinated entrance */
+@keyframes page-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+body { animation: page-rise 900ms var(--ease-out-soft) both; }
+
+/* Selection */
+::selection { background: var(--ember); color: var(--bg); }
+
+/* Focus ring — visible, ember, not the browser default */
+:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Pressable feedback — global, Emil principle */
+button, a[role="button"], [data-press] {
+  transition:
+    transform 220ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    color 260ms var(--ease-out);
+}
+button:active, a[role="button"]:active, [data-press]:active {
+  transform: scale(0.97);
+}
+
+/* Default-smooth color/border on links and small text */
+a, span, p, h1, h2, h3, h4 {
+  transition: color 260ms var(--ease-out);
+}
+
+/* Hairline utility */
+.hairline { border-color: var(--hairline); }
+
+/* Grain texture for the page — subtle physical signal */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>");
+}
+
+/* Ember marker — small circle/dot used as section signpost */
+.ember-dot {
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--ember);
+  box-shadow: 0 0 12px var(--ember);
+}
+
+/* Scroll-reveal — softer settle, gentler entry. Uses opacity + translate, not clip-path,
+   because translate animates better on the compositor and reads as smoother. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 1100ms var(--ease-out-soft),
+    transform 1200ms var(--ease-out-expo),
+    filter 900ms var(--ease-out-soft);
+  filter: blur(4px);
+  will-change: transform, opacity, filter;
+}
+[data-reveal="on"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
+}
+/* Drop will-change once the animation has settled, so it doesn't hold a layer forever */
+[data-reveal="on"][data-settled] {
+  will-change: auto;
+}
+
+/* Staggered children — gentler curve, smaller delta, tighter cadence */
+[data-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition:
+    opacity 900ms var(--ease-out-soft),
+    transform 1000ms var(--ease-out-expo);
+  will-change: transform, opacity;
+}
+[data-stagger="on"] > * {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+[data-stagger="on"] > *:nth-child(1) { transition-delay: 0ms; }
+[data-stagger="on"] > *:nth-child(2) { transition-delay: 70ms; }
+[data-stagger="on"] > *:nth-child(3) { transition-delay: 140ms; }
+[data-stagger="on"] > *:nth-child(4) { transition-delay: 210ms; }
+[data-stagger="on"] > *:nth-child(5) { transition-delay: 280ms; }
+[data-stagger="on"] > *:nth-child(6) { transition-delay: 350ms; }
+[data-stagger="on"] > *:nth-child(7) { transition-delay: 420ms; }
+[data-stagger="on"] > *:nth-child(8) { transition-delay: 490ms; }
+
+/* SectionBreak rules — draw outward from the center ember dot when revealed */
+.section-break-rule {
+  transform: scaleX(0);
+  transition: transform 1100ms var(--ease-out-expo);
+  will-change: transform;
+}
+.section-break-rule.left  { transform-origin: right center; }
+.section-break-rule.right { transform-origin: left center; }
+[data-reveal="on"] .section-break-rule { transform: scaleX(1); }
+
+/* Marquee — used in stack section, linear constant motion. translate3d for GPU. */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee 48s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* Pause on hover — gentle nudge that the surface responds to intent */
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Mask reveal — per-character / per-word entrance via overflow-hidden masks */
+.mask-reveal {
+  display: inline-block;
+  line-height: inherit;
+}
+.mask-char {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+  /* Reserve room below the baseline so descenders (g, p, y) don't get clipped. */
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+  line-height: 1;
+}
+.mask-inner {
+  display: inline-block;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 950ms var(--ease-out-expo);
+  will-change: transform;
+}
+.mask-reveal[data-on="true"] .mask-inner {
+  transform: translate3d(0, 0, 0);
+}
+
+/* On-hover wave — the cascade is built from the --i index each token carries */
+@media (hover: hover) and (pointer: fine) {
+  .mask-reveal[data-hover-wave="true"][data-on="true"]:hover .mask-inner {
+    transform: translate3d(0, -10%, 0);
+    transition: transform 420ms var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 28ms);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Reduced motion: no rise, no wave */
+@media (prefers-reduced-motion: reduce) {
+  .mask-inner { transform: none !important; transition: none !important; }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Underline — animated link */
+.uline {
+  position: relative;
+  display: inline-block;
 }
+.uline::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 520ms var(--ease-out-expo);
+}
+.uline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Reduced motion: honor it */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; filter: none; }
+  [data-stagger] > * { opacity: 1; transform: none; }
+  body { animation: none; }
+}
+
+/* Hover gate — touch devices skip hover transforms */
+@media (hover: hover) and (pointer: fine) {
+  .project-arrow { transition: transform 420ms var(--ease-out-expo); }
+  .project-row:hover .project-arrow { transform: translate(6px, -6px); }
+  .project-row:hover .project-title { color: var(--text-bright); }
+}
+
+/* Smoother nav backdrop change */
+header[data-scrolled] { transition: background-color 420ms var(--ease-out-soft), border-color 420ms var(--ease-out-soft), backdrop-filter 420ms var(--ease-out-soft); }
