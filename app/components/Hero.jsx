@@ -1,165 +1,119 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
-import { Stagger } from "./Reveal";
-import MaskReveal from "./MaskReveal";
-import { profile, stats } from "../lib/data";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import HeroNetwork from "./HeroNetwork";
+import useRevealOnView from "./useRevealOnView";
+
+// Hero — full-viewport stage. Canvas behind, edge rule on the right,
+// 3 stacked rows (top meta / giant name / 4 stats). Scroll parallax on the
+// inner block: name lifts -40px and inner fades to 0.15 over the first viewport.
+
+const NAME_ROW_1 = "ANSHDEEP";
+const NAME_ROW_2 = "SINGH";
+
+const STATS = [
+  { v: "4",     u: "repos",  l: "Full-stack ownership · Posha" },
+  { v: "2M+",   u: "users",  l: "Translation system · Stimuler" },
+  { v: "every", u: "MR",     l: "Multi-agent review · GitLab webhook" },
+  { v: "Q1",    u: "2026",   l: "Best quarterly performer · 5 months in" },
+];
 
 export default function Hero() {
-  const reduced = useReducedMotion();
-  // Spring is decorative now — moves the ember glow behind the text, not the text itself.
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 40, damping: 22, mass: 0.9 });
-  const sy = useSpring(my, { stiffness: 40, damping: 22, mass: 0.9 });
   const ref = useRef(null);
-
-  useEffect(() => {
-    if (reduced) return;
-    const el = ref.current;
-    if (!el) return;
-    const onMove = (e) => {
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      // Bigger travel here is fine; it's behind everything.
-      mx.set(x * 90);
-      my.set(y * 60);
-    };
-    const onLeave = () => { mx.set(0); my.set(0); };
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, [mx, my, reduced]);
+  // Map first viewport of scroll → name -40px / inner opacity 1→0.15
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const nameY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const innerOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.15]);
 
   return (
-    <section ref={ref} className="relative pt-32 md:pt-44 pb-16 md:pb-24">
-      {/* Cursor-following glow — decorative, behind text, never blocks selection */}
-      <div className="absolute inset-x-0 top-0 -z-10 h-[560px] overflow-hidden pointer-events-none">
-        <motion.div
-          aria-hidden
-          style={{ x: sx, y: sy, willChange: "transform" }}
-          className="absolute left-1/2 top-[-180px] h-[540px] w-[760px] -translate-x-1/2"
-        >
-          <div
-            className="h-full w-full rounded-full opacity-[0.22]"
-            style={{
-              background:
-                "radial-gradient(closest-side, var(--ember) 0%, transparent 70%)",
-              filter: "blur(46px)",
-            }}
-          />
-        </motion.div>
+    <header ref={ref} className="hero">
+      <HeroNetwork />
+
+      <div className="hero__edge" aria-hidden="true">
+        <span className="tick t1">N · 12.97</span>
+        <span className="tick t2">E · 77.59</span>
       </div>
 
-      {/* Eyebrow — quick, single fade */}
-      <div
-        className="flex items-center gap-3 mb-9 md:mb-12"
-        style={{ animation: "page-rise 700ms var(--ease-out-soft) 100ms both" }}
-      >
-        <span className="ember-dot" />
-        <span className="font-mono text-[12px] uppercase tracking-[0.22em] text-ink-500">
-          {profile.location} · Available for SWE-I / SDE-I roles
-        </span>
-      </div>
+      <motion.div className="hero__inner" style={{ opacity: innerOpacity }}>
 
-      {/* Name — per-letter mask reveal; selection works because the spring moved to the glow */}
-      <h1
-        className="text-display-xl font-medium text-ink-50 mb-10 md:mb-12 leading-[0.92] tracking-[-0.04em]"
-      >
-        <MaskReveal
-          per="char"
-          stagger={42}
-          delay={120}
-          duration={1000}
-          hoverWave
-          className="font-extrabold mr-3"
-        >
-          Anshdeep
-        </MaskReveal>
-        <span
-          className="singh inline-block align-baseline text-ink-500 font-light italic ml-2 md:ml-3 tracking-[-0.015em]"
-          style={{ fontSize: "clamp(1.8rem, 4.6vw, 4rem)" }}
-          aria-label="Singh"
-        >
-          Singh
-        </span>
-      </h1>
+        <div className="hero__top">
+          <div className="hero__intro">
+            <div className="micro micro--ember">◢◣  AGENT 001 / ANSHDEEP</div>
+            <div className="role">
+              Full-Stack &amp; AI Software Engineer. I design and ship agentic
+              systems that run in production: orchestrators, code-gen pipelines,
+              and the plumbing that lets LLMs touch real codebases without
+              breaking them.
+            </div>
+          </div>
 
-      {/* Everything below the name uses the Stagger primitive */}
-      <Stagger className="flex flex-col gap-8 md:gap-10">
-        <p className="max-w-[58ch] text-ink-300 text-[19px] md:text-[22px] leading-[1.45]">
-          Full-Stack &amp; AI Software Engineer.{" "}
-          <span className="text-ink-100">
-            I build agentic systems that survive production
-          </span>{" "}
-          — multi-agent code review, MCP tooling, and the full-stack surface that
-          wraps them. Currently SDE-1 at Posha, Best Quarterly Performer.
-        </p>
-
-        <ul className="grid gap-2 max-w-[60ch] text-[14.5px]">
-          {profile.identity.map((line, i) => (
-            <li key={i} className="flex gap-3 text-ink-400">
-              <span className="font-mono text-ink-700 mt-1 select-none">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="leading-[1.55]">{line}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          <a
-            href="mailto:anshd258@gmail.com?subject=Role%20opportunity"
-            className="group inline-flex items-center gap-2.5 rounded-full bg-ink-50 text-ink-950 px-5 py-3 text-[14px] font-medium hover:bg-white"
-            data-press
-          >
-            Let&rsquo;s talk
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 ease-[var(--ease-out)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-              <path d="M7 17L17 7M9 7h8v8" />
-            </svg>
-          </a>
-          <a
-            href={profile.resume}
-            target="_blank"
-            rel="noopener"
-            className="inline-flex items-center gap-2.5 rounded-full border border-[color:var(--hairline-strong)] text-ink-100 px-5 py-3 text-[14px] hover:border-ember hover:text-ember"
-            data-press
-          >
-            <span className="font-mono text-[11px] text-ink-500">PDF</span>
-            Résumé
-          </a>
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noopener"
-            className="ml-1 inline-flex items-center gap-2 text-[14px] text-ink-400 hover:text-ink-100 uline"
-          >
-            github.com/anshd258
-          </a>
+          <div className="hero__right">
+            <span className="micro">CURRENTLY</span>
+            <b>SDE-1, POSHA</b>
+            <span className="micro">SINCE NOV 2025</span>
+            <span style={{ height: 14 }} />
+            <span className="micro">BASED IN</span>
+            <b>BENGALURU · IN</b>
+            <span className="micro">12.9716°N · 77.5946°E</span>
+          </div>
         </div>
 
-        <dl className="mt-10 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-8 border-t border-[color:var(--hairline)] pt-10">
-          {stats.map((s) => (
-            <div key={s.label} className="flex flex-col gap-1">
-              <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-500">
-                {s.label}
-              </dt>
-              <dd className="text-ink-50 text-2xl md:text-3xl font-medium tabular-nums">
-                {s.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Stagger>
+        <motion.h1
+          className="hero__name"
+          aria-label={`${NAME_ROW_1} ${NAME_ROW_2}`}
+          style={{ y: nameY }}
+        >
+          <span className="row r1">
+            {Array.from(NAME_ROW_1).map((ch, i) => (
+              <span
+                key={i}
+                className="ltr"
+                style={{ animationDelay: `${i * 30}ms` }}
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+          <span className="row r2">
+            {Array.from(NAME_ROW_2).map((ch, i) => (
+              <span
+                key={i}
+                className="ltr"
+                style={{ animationDelay: `${300 + i * 30}ms` }}
+              >
+                {ch}
+              </span>
+            ))}
+            <span
+              className="ltr accent"
+              style={{ animationDelay: "520ms" }}
+              aria-hidden="true"
+            >
+              ●
+            </span>
+          </span>
+        </motion.h1>
 
-      <div className="hidden md:flex absolute bottom-6 right-6 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-600">
-        <span className="h-px w-8 bg-[color:var(--hairline-strong)]" />
-        Scroll
-      </div>
-    </section>
+        <div className="hero__bottom">
+          {STATS.map((s, i) => (
+            <Stat key={i} v={s.v} u={s.u} l={s.l} delay={i * 80} />
+          ))}
+        </div>
+
+      </motion.div>
+    </header>
+  );
+}
+
+function Stat({ v, u, l, delay }) {
+  const ref = useRevealOnView(delay);
+  return (
+    <div ref={ref} className="hero__stat reveal">
+      <div className="v">{v}<span className="u"> {u}</span></div>
+      <div className="l">{l}</div>
+    </div>
   );
 }

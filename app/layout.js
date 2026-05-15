@@ -3,14 +3,14 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata = {
-  title: "Anshdeep Singh — Full-Stack & AI Software Engineer",
+  title: "Anshdeep Singh · Full-Stack & AI Engineer",
   description:
-    "SDE-1 at Posha. I build agentic AI systems, multi-agent code review, and full-stack products across Flutter, Next.js, and FastAPI.",
+    "SDE-1 at Posha. I ship agentic systems in production: multi-agent code review, MCP tooling, and the full-stack surface that wraps them.",
   metadataBase: new URL("https://anshdeep.dev"),
   openGraph: {
-    title: "Anshdeep Singh — Full-Stack & AI Software Engineer",
+    title: "Anshdeep Singh · Full-Stack & AI Engineer",
     description:
-      "SDE-1 at Posha. Agentic AI systems, multi-agent code review, full-stack products.",
+      "SDE-1 at Posha. Agentic systems in production: multi-agent code review, MCP tooling, full-stack delivery.",
     type: "website",
   },
   icons: { icon: "/favicon.ico" },
@@ -19,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="grain antialiased">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

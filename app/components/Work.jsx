@@ -1,129 +1,152 @@
 "use client";
 import { useState } from "react";
-import { Reveal } from "./Reveal";
-import SectionHeader from "./SectionHeader";
-import { work } from "../lib/data";
+import useRevealOnView from "./useRevealOnView";
+
+// Work — three expanding rows. Click toggles a panel via the
+// grid-template-rows 0fr → 1fr trick. Only one open at a time.
+
+const ROLES = [
+  {
+    id: 1,
+    idx: "01 / NOW",
+    company: "Posha",
+    sub: "SDE-1 · Bengaluru",
+    role: "Full-stack across IoT, mobile & AI tooling",
+    when: "Nov 2025 → Present",
+    arc: (
+      <>
+        <strong>Best Quarterly Performer</strong> within my first five months.
+        Full-stack ownership across <strong>four major repos</strong>: the IoT
+        cooking device, mobile companion apps (Flutter + native iOS/Android),
+        and internal AI tooling. The work bridges hardware constraints with LLM
+        agents that have to behave under real production load.
+      </>
+    ),
+    stack: [
+      "Python","FastAPI","LangGraph","LangChain","ChromaDB","MCP","AWS","GraphQL","Flutter","iOS","Android","Java",
+    ],
+    shipped: [
+      <>Multi-agent code-review orchestrator on every GitLab MR, open-sourced as <strong>Deep-Hook</strong></>,
+      "Figma-to-Flutter agentic code generation, design-system-aware",
+      <>Grocery &amp; Subscriptions, the company&rsquo;s <strong>first non-hardware revenue stream</strong></>,
+      "Internal MCP tools + an LLM evaluation pipeline for the commons package",
+    ],
+  },
+  {
+    id: 2,
+    idx: "02",
+    company: "NeoSurge",
+    sub: "SDE-1 · Short-term",
+    role: "Instant mutual-fund redemption, ZapPay",
+    when: "Aug 2025 → Nov 2025",
+    arc: (
+      <>
+        Three-month sprint owning <strong>ZapPay</strong> end-to-end: instant
+        mutual-fund redemption that settles before the user closes the app.
+        Drove microservices boundary work and performance across the platform.
+      </>
+    ),
+    stack: ["Express.js","Flutter","Microservices","REST","Redis","Postgres"],
+    shipped: [
+      "ZapPay: instant redemption, Express + Flutter, sub-second settlement UX",
+      <>Core features for <strong>Sernet Tech / TickFunds</strong> including LAMF (Loan Against Mutual Fund)</>,
+      "Microservice splitting + performance work across the platform",
+    ],
+  },
+  {
+    id: 3,
+    idx: "03",
+    company: "Stimuler",
+    sub: "SDE Intern · India's Best AI App 2023",
+    role: "Translation system & observability · 2M+ MAU",
+    when: "Dec 2024 → Jul 2025",
+    arc: (
+      <>
+        Core contributor on a product serving <strong>2M+ monthly active users</strong>.
+        The work I&rsquo;m proudest of: app-wide instrumentation + observability
+        telemetry that doubled as production health signal <em>and</em> ML
+        training-data source. Closing the loop between what users do and what
+        the next model learns.
+      </>
+    ),
+    stack: ["Python","Flutter","Observability","Telemetry","ML pipelines"],
+    shipped: [
+      "Core contributor on translation system at scale",
+      "App-wide instrumentation & observability telemetry",
+      <>Telemetry doubles as <strong>ML training-data source</strong></>,
+    ],
+  },
+];
 
 export default function Work() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(1); // first row open by default
+  const headRef = useRevealOnView(0);
 
   return (
-    <>
-      <SectionHeader
-        id="work"
-        index="01"
-        kicker="Work"
-        title="Three years of shipping."
-        subtitle="From IEEE-published agri-tech to 2M-user AI products to multi-agent systems in production. Click a role to expand."
-      />
+    <section id="work" className="section">
+      <div className="wrap">
+        <div ref={headRef} className="section__head reveal">
+          <div>
+            <div className="kicker">
+              <span className="idx">01</span><span className="dot" />
+              WORK · 3 ROLES · 18 MONTHS IN INDUSTRY
+            </div>
+            <h2 className="section__title">Where the code <em>shipped</em>.</h2>
+          </div>
+          <div className="micro">CLICK TO EXPAND</div>
+        </div>
 
-      <Reveal className="border-t border-[color:var(--hairline)]">
-        {work.map((w, i) => {
-          const isOpen = open === i;
-          return (
-            <article
-              key={w.company}
-              className="border-b border-[color:var(--hairline)] group"
-            >
-              <button
-                onClick={() => setOpen(isOpen ? -1 : i)}
-                aria-expanded={isOpen}
-                className="w-full grid grid-cols-12 gap-4 md:gap-8 items-start text-left py-8 md:py-10"
-              >
-                <div className="col-span-12 md:col-span-2 font-mono text-[12px] text-ink-500 tabular-nums pt-1">
-                  {w.period}
-                </div>
-                <div className="col-span-12 md:col-span-7">
-                  <h3 className="text-ink-50 text-2xl md:text-3xl font-medium leading-tight">
-                    {w.company}{" "}
-                    <span className="text-ink-500 font-light">· {w.role}</span>
-                  </h3>
-                  <p className="mt-2 text-ink-400 text-[15.5px] max-w-[60ch] leading-[1.55]">
-                    {w.summary}
-                  </p>
-                </div>
-                <div className="hidden md:flex col-span-3 justify-end pt-2">
-                  <span
-                    aria-hidden
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color:var(--hairline-strong)] text-ink-300 group-hover:border-ember group-hover:text-ember transition-colors duration-200 ease-[var(--ease-out)]"
-                  >
-                    <svg
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      style={{
-                        transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                        transition: "transform 260ms var(--ease-out)",
-                      }}
-                    >
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
-                </div>
-              </button>
-
-              <div
-                className="grid overflow-hidden"
-                style={{
-                  gridTemplateRows: isOpen ? "1fr" : "0fr",
-                  transition: "grid-template-rows 720ms var(--ease-out-expo)",
-                }}
-              >
-                <div
-                  className="min-h-0"
-                  style={{
-                    opacity: isOpen ? 1 : 0,
-                    transform: isOpen ? "translateY(0)" : "translateY(-6px)",
-                    transition:
-                      "opacity 520ms var(--ease-out-soft) 120ms, transform 620ms var(--ease-out-expo) 120ms",
-                  }}
+        <ol className="work__list">
+          {ROLES.map((r) => {
+            const isOpen = open === r.id;
+            return (
+              <li key={r.id} style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                <button
+                  type="button"
+                  className={`work__row ${isOpen ? "open" : ""}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`work-detail-${r.id}`}
+                  onClick={() => setOpen(isOpen ? -1 : r.id)}
                 >
-                  <div className="grid grid-cols-12 gap-4 md:gap-8 pb-9 md:pb-12">
-                    <div className="hidden md:block col-span-2" />
-                    <ul className="col-span-12 md:col-span-7 space-y-3.5">
-                      {w.bullets.map((b, j) => (
-                        <li
-                          key={j}
-                          className="flex gap-3 text-ink-300 text-[15px] leading-[1.6]"
-                          style={{
-                            opacity: isOpen ? 1 : 0,
-                            transform: isOpen ? "translateY(0)" : "translateY(4px)",
-                            transition: `opacity 520ms var(--ease-out-soft) ${180 + j * 60}ms, transform 620ms var(--ease-out-expo) ${180 + j * 60}ms`,
-                          }}
-                        >
-                          <span className="font-mono text-[11px] text-ember mt-1.5 select-none">
-                            {String(j + 1).padStart(2, "0")}
-                          </span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="col-span-12 md:col-span-3 flex flex-wrap content-start gap-1.5">
-                      {w.stack.map((t, k) => (
-                        <span
-                          key={t}
-                          className="font-mono text-[11px] text-ink-400 border border-[color:var(--hairline)] rounded-full px-2.5 py-1"
-                          style={{
-                            opacity: isOpen ? 1 : 0,
-                            transform: isOpen ? "translateY(0) scale(1)" : "translateY(4px) scale(0.96)",
-                            transition: `opacity 460ms var(--ease-out-soft) ${260 + k * 36}ms, transform 520ms var(--ease-out-expo) ${260 + k * 36}ms`,
-                          }}
-                        >
-                          {t}
-                        </span>
-                      ))}
+                  <span className="idx">{r.idx}</span>
+                  <span className="co">{r.company}<small>{r.sub}</small></span>
+                  <span className="role-line">{r.role}</span>
+                  <span className="when">{r.when}</span>
+                  <span className="open-arrow">→</span>
+                </button>
+                <div
+                  id={`work-detail-${r.id}`}
+                  className={`work__detail ${isOpen ? "open" : ""}`}
+                  role="region"
+                  aria-hidden={!isOpen}
+                >
+                  <div className="inner">
+                    <div className="pad">
+                      <div />
+                      <div>
+                        <h4>The arc</h4>
+                        <p>{r.arc}</p>
+                        <h4>Stack</h4>
+                        <div className="stack-row">
+                          {r.stack.map((t) => (
+                            <span key={t} className="tag">{t}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4>What shipped</h4>
+                        <ul className="ship">
+                          {r.shipped.map((s, j) => <li key={j}>{s}</li>)}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          );
-        })}
-      </Reveal>
-    </>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
   );
 }
