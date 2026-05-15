@@ -177,19 +177,50 @@ a, span, p, h1, h2, h3, h4 {
   animation-play-state: paused;
 }
 
+/* Hero italic "Singh" — single-block rise. Italic letters extend past their
+   advance width; no clipping, no masks, ample trailing padding so nothing crops. */
+.singh {
+  padding-right: 0.45em;       /* breathing room for the italic h's right lean */
+  padding-top: 0.05em;
+  margin-right: -0.05em;
+  overflow: visible;
+  opacity: 0;
+  transform: translate3d(0, 24%, 0);
+  filter: blur(4px);
+  animation: singh-rise 1100ms var(--ease-out-expo) 480ms forwards;
+}
+@keyframes singh-rise {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .singh { animation: none; opacity: 1; transform: none; filter: none; }
+}
+
 /* Mask reveal — per-character / per-word entrance via overflow-hidden masks */
 .mask-reveal {
   display: inline-block;
   line-height: inherit;
+  overflow: visible;          /* never clip at the outer level */
 }
 .mask-char {
   display: inline-block;
   overflow: hidden;
   vertical-align: baseline;
-  /* Reserve room below the baseline so descenders (g, p, y) don't get clipped. */
-  padding-bottom: 0.18em;
-  margin-bottom: -0.18em;
+  /* Generous reservation on top + right covers italic ascenders and lean; bottom
+     covers descenders. Negative margins retract the layout box so siblings still
+     pack normally. */
+  padding: 0.28em 0.34em 0.28em 0.04em;
+  margin:  -0.28em -0.34em -0.28em -0.04em;
   line-height: 1;
+}
+/* The rightmost glyph leans into nothing — give it extra room */
+.mask-reveal .mask-char:last-of-type {
+  padding-right: 0.55em;
+  margin-right: -0.55em;
 }
 .mask-inner {
   display: inline-block;
@@ -199,6 +230,10 @@ a, span, p, h1, h2, h3, h4 {
 }
 .mask-reveal[data-on="true"] .mask-inner {
   transform: translate3d(0, 0, 0);
+}
+/* After every letter has risen, drop the clip — italics + hover-wave can move freely */
+.mask-reveal[data-settled="true"] .mask-char {
+  overflow: visible;
 }
 
 /* On-hover wave — the cascade is built from the --i index each token carries */

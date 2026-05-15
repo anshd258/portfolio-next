@@ -14,11 +14,13 @@ export default function MaskReveal({
   trigger = "mount",   // "mount" | "view"
   as = "span",
   className = "",
+  style,               // forwarded onto the outer span (font-size overrides etc.)
   hoverWave = false,   // adds a subtle on-hover cascade up-then-down
 }) {
   const text = typeof children === "string" ? children : "";
   const ref = useRef(null);
   const [on, setOn] = useState(false);
+  const [settled, setSettled] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" &&
@@ -53,13 +55,27 @@ export default function MaskReveal({
   const tokens = per === "word" ? text.split(/(\s+)/) : Array.from(text);
   const Tag = as;
 
+  // Once the last letter has finished rising, drop overflow:hidden so italic
+  // letters (which lean past their advance width) aren't clipped at rest.
+  useEffect(() => {
+    if (!on) {
+      setSettled(false);
+      return;
+    }
+    const total = delay + stagger * Math.max(0, tokens.length - 1) + duration + 80;
+    const t = setTimeout(() => setSettled(true), total);
+    return () => clearTimeout(t);
+  }, [on, delay, stagger, duration, tokens.length]);
+
   return (
     <Tag
       ref={ref}
       aria-label={text}
       data-on={on ? "true" : "false"}
+      data-settled={settled ? "true" : undefined}
       data-hover-wave={hoverWave ? "true" : undefined}
       className={`mask-reveal ${className}`}
+      style={style}
     >
       {tokens.map((tok, i) => {
         if (tok === " " || /^\s+$/.test(tok)) {

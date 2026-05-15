@@ -62,7 +62,7 @@ export default function Hero() {
       >
         <span className="ember-dot" />
         <span className="font-mono text-[12px] uppercase tracking-[0.22em] text-ink-500">
-          {profile.location} · Available for Sr / SDE-II roles
+          {profile.location} · Available for SWE-I / SDE-I roles
         </span>
       </div>
 
@@ -80,16 +80,13 @@ export default function Hero() {
         >
           Anshdeep
         </MaskReveal>
-        <MaskReveal
-          per="char"
-          stagger={42}
-          delay={480}
-          duration={1000}
-          hoverWave
-          className="text-ink-500 font-light italic"
+        <span
+          className="singh inline-block align-baseline text-ink-500 font-light italic ml-2 md:ml-3 tracking-[-0.015em]"
+          style={{ fontSize: "clamp(1.8rem, 4.6vw, 4rem)" }}
+          aria-label="Singh"
         >
           Singh
-        </MaskReveal>
+        </span>
       </h1>
 
       {/* Everything below the name uses the Stagger primitive */}
